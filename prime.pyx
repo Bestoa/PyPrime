@@ -40,7 +40,7 @@ class Prime:
         self.count = 0
         self.bitmap = Bitmap(end)
         self.done = False
-    
+
     def cal(self):
         cdef uint64_t i = 2;
         cdef uint64_t j = 0;
@@ -48,7 +48,7 @@ class Prime:
         cdef uint64_t end = self.end
         cdef Bitmap bitmap = self.bitmap
         cdef uint8_t *data = bitmap.data
-    
+
         _setBit(data, 0)
         _setBit(data, 1)
 
@@ -75,4 +75,23 @@ class Prime:
 
         return _getBit(data, n) == 0
 
-    
+    def listPrime(self, start, end):
+        if not self.done:
+            raise Exception('Call cal method before this')
+        if end > self.end:
+            raise Exception('%d is lager than end %d' % (end, self.end))
+        if start < 0:
+            start = 0
+
+        cdef Bitmap bitmap = self.bitmap
+        cdef uint8_t *data = bitmap.data
+
+        result = []
+
+        for i in range(start, end + 1):
+            if _getBit(data, i) == 0:
+                result.append(i)
+
+        return result
+
+
