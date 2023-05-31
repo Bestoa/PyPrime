@@ -75,6 +75,23 @@ class Prime:
 
         return _getBit(data, n) == 0
 
+    def countPrime(self, start, end):
+        if not self.done:
+            raise Exception('Call cal method before this')
+        if end > self.end:
+            raise Exception('%d is lager than end %d' % (end, self.end))
+        if start < 0:
+            start = 0
+
+        cdef Bitmap bitmap = self.bitmap
+        cdef uint8_t *data = bitmap.data
+        cdef uint64_t count = 0;
+
+        for i in range(start, end + 1):
+            if _getBit(data, i) == 0:
+                count = count + 1;
+        return count
+
     def listPrime(self, start, end):
         if not self.done:
             raise Exception('Call cal method before this')
